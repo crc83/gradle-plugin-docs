@@ -18,60 +18,44 @@ import org.asciidoctor.Options;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 
-public class Documenter {
+class Documenter {
 
-	//TODO SB : rework
-	File outputDirectory = getDefaultOutputDirectory();
-	Map<String, Object> model = new HashMap<>();
+	private static final String BUILD_GENERATED_SNIPPETS = "build/generated-snippets";
+	private static final String TEMPLATES_FOLDER = "org/sbelei/gradleplugindocs/asciidoctor/templates/";
+	private String fileName;
+	private Map<String, Object> model;
 
-	public void than(String string) {
-		// TODO Auto-generated method stub
-		generateModel();
-		performDocumentGeneration();
+	public Documenter(String fileName, Map<String, Object> model) {
+		this.fileName = fileName;
+		this.model = model;
 	}
 
-	private void generateModel() {
-		model.put("build_gradle", "foo");
-		model.put("gradle_command", "bar");
-		model.put("gradle_result", "hello");
-
-	}
-
-	private void performDocumentGeneration() {
+	public void generate() {
 //		Options options = new Options();
 //		options.setAttributes(new Attributes("snippets=custom"));
 //		String converted = Asciidoctor.Factory.create().convert("{snippets}", options);
 //		System.out.println(converted);
-
+		File outputDirectory = getDefaultOutputDirectory();
 		outputDirectory.mkdirs();
 		try {
-			InputStream fis = getClass().getClassLoader().getResourceAsStream("org/sbelei/gradleplugindocs/asciidoctor/templates/default-task.snippet");
+			InputStream fis = getClass().getClassLoader().getResourceAsStream(TEMPLATES_FOLDER+"plugin-description-single-extension.snippet");
 			Template tmpl = Mustache.compiler().compile(new InputStreamReader(fis));
-			Writer writer = new PrintWriter(new FileOutputStream(new File(outputDirectory,"test.txt")));
+			File generatedFile = new File(outputDirectory, fileName + ".adoc");
+			Writer writer = new PrintWriter(new FileOutputStream(generatedFile));
 			tmpl.execute(model, writer);
 			writer.close();
+
+			Asciidoctor.Factory.create().renderFile(generatedFile, new HashMap<>());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-
-	public void when_gradle(String string) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void given(String s) {
 
 	}
 
 	//copy from : org.springframework.restdocs.ManualRestDocumentation.getDefaultOutputDirectory()
 	private static File getDefaultOutputDirectory() {
-		if (new File("pom.xml").exists()) {
-			return new File("target/generated-snippets");
-		}
-		return new File("build/generated-snippets");
+		return new File(BUILD_GENERATED_SNIPPETS);
 	}
 
 }

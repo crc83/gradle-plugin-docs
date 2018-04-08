@@ -10,6 +10,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
@@ -49,6 +50,7 @@ test {
 }
 
 dependencies {
+	compile 'org.codehaus.groovy:groovy-all:2.4.12'
 	compile 'com.samskivert:jmustache:1.14'
 	compileOnly 'org.asciidoctor:asciidoctorj:1.5.5'
 
@@ -57,7 +59,7 @@ dependencies {
 	//testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 
-	testCompile 'org.asciidoctor:asciidoctorj:1.5.5'
-	testCompile 'org.apache.pdfbox:pdfbox:2.0.6'
+	testRuntime 'org.asciidoctor:asciidoctorj:1.5.5'
+	testRuntime 'org.apache.pdfbox:pdfbox:2.0.6'
 	testRuntime 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.15'
 }
