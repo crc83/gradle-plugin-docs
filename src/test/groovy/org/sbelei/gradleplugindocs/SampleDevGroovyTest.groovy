@@ -18,7 +18,7 @@ class SampleDevGroovyTest {
 				my-plugin-config {
 					param-a=2
 					param-b=42
-				}""" ;
+				}""".stripIndent() ;
 
 		d.task "task1" ;
 

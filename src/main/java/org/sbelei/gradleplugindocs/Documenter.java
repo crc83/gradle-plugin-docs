@@ -2,7 +2,6 @@ package org.sbelei.gradleplugindocs;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,12 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.asciidoctor.Asciidoctor;
-import org.asciidoctor.Attributes;
-import org.asciidoctor.Options;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 
+/**
+ * This class is responsible for document generation.
+ * It takes snippet from resources and parameters from map
+ * (prepared by PluginDoc)
+ * @author Serhii Belei
+ *
+ */
 class Documenter {
 
 	private static final String BUILD_GENERATED_SNIPPETS = "build/generated-snippets";

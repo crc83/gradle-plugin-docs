@@ -1,7 +1,10 @@
 package org.sbelei.gradleplugindocs;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.gradle.testkit.runner.GradleRunner;
 
 /**
  * Just a bean with tons of setters
@@ -23,17 +26,40 @@ public class PluginDoc {
 	private String configDescription;
 	private String since;
 
+	private BuildScript build;
+
 	public PluginDoc(String pluginName, String pluginDescription) {
 		this.pluginName = pluginName;
 		this.pluginDescription = pluginDescription;
+		try {
+			this.build =  new BuildScript();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void config(String config) {
 		this.config = config;
 	}
 
-	public void task(String task) {
+	public void task(String task) throws IOException {
+		build.addLinesToBuild("plugins {");
+		//TODO : Add prerequired plugins here
+		build.addLinesToBuild("	id '"+pluginName+"'");
+		build.addLinesToBuild("}");
+		build.addLinesToBuild(config);
+
+		build.addLinesToBuild("version = '0.1.0'");
+		build.addLinesToBuild("group = 'test.group'");
+
+
 		this.task = task;
+
+		GradleRunner.create()
+			.withProjectDir(build.testProjectDir.getRoot())
+			.withArguments(task)
+			.forwardOutput()
+			.build();
 	}
 
 	public void task_description(String taskDescription) {
