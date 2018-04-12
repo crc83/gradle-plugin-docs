@@ -1,10 +1,12 @@
 buildscript {
 	repositories {
 		jcenter()
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
 		classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2'
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+		classpath 'com.gradle:build-scan-plugin:1.9'
 		// no longer need it since Gradle 4.6
 		//classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
 	}
@@ -17,11 +19,15 @@ apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'com.gradle.build-scan'
 // no longer need it since Gradle 4.6
 //apply plugin: 'org.junit.platform.gradle.plugin'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.8
 
+buildScan { licenseAgreementUrl = 'https://gradle.com/terms-of-service'; licenseAgree = 'yes' }
 repositories {
 	jcenter()
 }
@@ -43,6 +49,16 @@ sonarqube {
 	}
 }
 
+eclipse {
+	jdt {
+		file {
+			withProperties { properties ->
+				properties.setProperty("org.eclipse.jdt.core.compiler.compliance", "1.8")
+			}
+		}
+	}
+}
+
 test {
 	//useJUnitPlatform()
 	useJUnit()
@@ -53,6 +69,8 @@ test {
 }
 
 dependencies {
+	//compile gradleApi()
+	compile gradleTestKit()
 	compile 'org.codehaus.groovy:groovy-all:2.4.12'
 	compile 'com.samskivert:jmustache:1.14'
 	compileOnly 'org.asciidoctor:asciidoctorj:1.5.5'
