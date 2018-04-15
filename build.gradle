@@ -7,6 +7,7 @@ buildscript {
 		classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2'
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
 		classpath 'com.gradle:build-scan-plugin:1.9'
+		classpath 'net.researchgate:gradle-release:2.6.0'
 		// no longer need it since Gradle 4.6
 		//classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
 	}
@@ -21,6 +22,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'com.gradle.build-scan'
+apply plugin: 'net.researchgate.release'
 // no longer need it since Gradle 4.6
 //apply plugin: 'org.junit.platform.gradle.plugin'
 
@@ -28,6 +30,12 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.8
 
 buildScan { licenseAgreementUrl = 'https://gradle.com/terms-of-service'; licenseAgree = 'yes' }
+
+release {
+	tagTemplate='dev-$version'
+	buildTasks=['jar', 'publish']
+}
+
 repositories {
 	jcenter()
 }
