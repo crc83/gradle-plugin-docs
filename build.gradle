@@ -83,7 +83,7 @@ dependencies {
 	compile 'com.samskivert:jmustache:1.14'
 	compileOnly 'org.asciidoctor:asciidoctorj:1.5.5'
 
-	testCompile 'junit:junit:4.12'
+	compile 'junit:junit:4.12'
     //testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
 	//testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
